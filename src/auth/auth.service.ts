@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from 'src/users/users.service'
 
@@ -12,6 +16,8 @@ interface IGoogleUser {
 
 @Injectable()
 export class AuthService {
+  private logger: Logger = new Logger('Auth')
+
   constructor(
     private jwtService: JwtService,
     private userService: UsersService,
@@ -23,6 +29,8 @@ export class AuthService {
 
   async googleSignIn(req: any) {
     const user = req.user as IGoogleUser
+
+    this.logger.log(`${user.email} signed in`)
 
     const userExists = await this.userService.findOneByEmail(user.email)
 

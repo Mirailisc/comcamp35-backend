@@ -1,7 +1,18 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common'
 import { FileService } from './file.service'
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
+import { ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { AuthGuard } from '@nestjs/passport'
+import { UploadFileDto } from './dto/upload-file.dto'
 
 @ApiTags('File Upload')
 @Controller('file')
@@ -11,18 +22,18 @@ export class FileController {
   @Post('upload')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file)
+  @UseGuards(AuthGuard('jwt'))
+  async uploadFile(
+    @Body() uploadFileDto: UploadFileDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any,
+  ) {
+    await this.fileService.uploadFile(file, req.user.id, uploadFileDto.type)
+  }
+
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  async getFilesUrl(@Req() req: any) {
+    return await this.fileService.getFileUrlByUserId(req.user.id)
   }
 }
