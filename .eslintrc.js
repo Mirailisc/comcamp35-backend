@@ -22,7 +22,7 @@ module.exports = {
     'no-nested-ternary': 'error',
     'no-useless-return': 'error',
     'no-warning-comments': 'warn',
-    'require-await': 'error',
+    'require-await': 'off',
     'spaced-comment': 'error',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

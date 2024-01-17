@@ -9,4 +9,10 @@ export class CreateUserDto {
 
   @ApiProperty({ example: 'Doe', nullable: true })
   last_name?: string
+
+  @ApiProperty({
+    example: 'https://avatars.githubusercontent.com/u/45442561?v=4',
+    nullable: true,
+  })
+  profile_url?: string
 }
