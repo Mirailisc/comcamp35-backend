@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -17,8 +18,11 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiResponse({ status: 409, description: 'Email is already exists' })
-  @ApiResponse({ status: 201, description: 'OK' })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Email is already exists',
+  })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'OK' })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto)
