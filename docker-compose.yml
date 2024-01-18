@@ -2,24 +2,60 @@ version: '3.8'
 
 networks:
   app:
+    driver: bridge
 
 volumes:
   postgres_data:
   minio_data:
     
 services:
-  db:
+  app:
+    container_name: comcamp35-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/comcamp?schema=public
+      - JWT_TOKEN
+      - MINIO_ENDPOINT
+      - MINIO_ACCESS_KEY
+      - MINIO_SECRET_KEY
+      - MINIO_BUCKET_NAME
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_SECRET
+      - GOOGLE_CALLBACK_URL
+      - FRONTEND_URL
+    volumes:
+      - '.:/usr/src/app'
+    ports:
+      - '4000:4000'
+    networks:
+      - app
+
+  postgres:
     image: postgres:16
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_USER=root
+      - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=comcamp
     ports:
       - 5432:5432
     volumes:
       - 'postgres_data:/data'
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d comcamp'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - app
   
   minio:
     image: docker.io/bitnami/minio
@@ -30,6 +66,13 @@ services:
     volumes:
       - 'minio_data:/data'
     environment:
-      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_USER=${DB_USER}
       - MINIO_ROOT_PASSWORD=${DB_PASSWORD}
       - MINIO_DEFAULT_BUCKETS=comcamp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - app

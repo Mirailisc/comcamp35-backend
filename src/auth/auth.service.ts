@@ -5,14 +5,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from 'src/users/users.service'
-
-interface IGoogleUser {
-  email: string
-  firstName: string
-  lastName: string
-  picture: any
-  accessToken: string
-}
+import { IGoogleUser } from './google.type'
 
 @Injectable()
 export class AuthService {
@@ -23,16 +16,13 @@ export class AuthService {
     private userService: UsersService,
   ) {}
 
-  generateJwt(payload) {
+  generateJwt(payload: any) {
     return this.jwtService.sign(payload)
   }
 
-  async googleSignIn(req: any) {
-    const user = req.user as IGoogleUser
-
-    this.logger.log(`${user.email} signed in`)
-
+  async googleSignIn(user: IGoogleUser) {
     const userExists = await this.userService.findOneByEmail(user.email)
+    this.logger.log(`${user.email} signed in`)
 
     if (!userExists) {
       return this.registerUser(user)
@@ -61,19 +51,4 @@ export class AuthService {
       throw new InternalServerErrorException()
     }
   }
-
-  // async validateToken(req: Request) {
-  //   const authorization = req.get('authorization')
-
-  //   if (!authorization) {
-  //     throw new UnauthorizedException()
-  //   }
-
-  //   const userTempId = authorization.replace('Bearer', '')
-  //   if (!uuidValidate(userTempId)) {
-  //     throw new UnauthorizedException()
-  //   }
-
-  //   return googleUser
-  // }
 }

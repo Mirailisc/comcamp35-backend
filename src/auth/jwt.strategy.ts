@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { UsersService } from 'src/users/users.service'
+import { ACCESS_TOKEN_COOKIE_NAME } from 'src/config/cookies'
 
 export type JwtPayload = {
   sub: string
@@ -14,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const extractJwtFromCookie = (req) => {
       let token = null
       if (req && req.cookies) {
-        token = req.cookies['access_token']
+        token = req.cookies[ACCESS_TOKEN_COOKIE_NAME]
       }
       return token || ExtractJwt.fromAuthHeaderAsBearerToken()(req)
     }

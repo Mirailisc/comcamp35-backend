@@ -20,4 +20,10 @@ export class UsersController {
   async update(@Req() req: any, @Body() updateUserDto: UpdateUserDto) {
     return await this.usersService.update(req.user.id, updateUserDto)
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('info')
+  async getCurrentUser(@Req() req: any) {
+    return await this.usersService.findOneByEmail(req.user.email)
+  }
 }
