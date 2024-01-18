@@ -14,8 +14,8 @@ export class FileService {
   constructor(private prisma: PrismaService) {
     this.minioClient = new Minio.Client({
       endPoint: process.env.MINIO_ENDPOINT,
-      port: 9000,
-      useSSL: false,
+      port: 443,
+      useSSL: true,
       accessKey: process.env.MINIO_ACCESS_KEY,
       secretKey: process.env.MINIO_SECRET_KEY,
     })
@@ -73,7 +73,7 @@ export class FileService {
   }
 
   async getFileUrl(fileName: string) {
-    return `http://${process.env.MINIO_ENDPOINT}:9000/${process.env.MINIO_BUCKET_NAME}/${fileName}`
+    return `http://${process.env.MINIO_ENDPOINT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`
   }
 
   async deleteFile(fileName: string) {
