@@ -9,7 +9,6 @@ FROM base AS deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 FROM deps AS build
-RUN pnpx prisma db pull
 RUN pnpm prisma
 RUN pnpm build
 

@@ -1,9 +1,10 @@
 import { DocumentBuilder } from '@nestjs/swagger'
 
 const limitShaVersion = 5
+const appVersion = process.env.APP_VERSION
 
 export const config = new DocumentBuilder()
   .setTitle('Comcamp 35 API')
   .setDescription('API for Comcamp 35')
-  .setVersion(process.env.APP_VERSION.substring(0, limitShaVersion) ?? 'Dev')
+  .setVersion(appVersion ? appVersion.substring(0, limitShaVersion) : 'Dev')
   .build()

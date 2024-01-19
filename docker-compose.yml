@@ -11,16 +11,11 @@ volumes:
 services:
   app:
     container_name: comcamp35-backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/comcamp?schema=public
+      - DATABASE_URL
       - JWT_TOKEN
       - MINIO_ENDPOINT
       - MINIO_ACCESS_KEY
@@ -30,6 +25,7 @@ services:
       - GOOGLE_SECRET
       - GOOGLE_CALLBACK_URL
       - FRONTEND_URL
+      - APP_VERSION
     volumes:
       - '.:/usr/src/app'
     ports:
