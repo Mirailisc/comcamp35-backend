@@ -9,6 +9,7 @@ FROM base AS deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 FROM deps AS build
+RUN pnpx prisma db pull
 RUN pnpm prisma
 RUN pnpm build
 
@@ -27,6 +28,7 @@ ENV GOOGLE_CLIENT_ID GOOGLE_CLIENT_ID
 ENV GOOGLE_SECRET GOOGLE_SECRET
 ENV GOOGLE_CALLBACK_URL GOOGLE_CALLBACK_URL
 
+ENV APP_VERSION APP_VERSION
 ENV FRONTEND_URL FRONTEND_URL
 
 ENV NODE_ENV=production

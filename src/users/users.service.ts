@@ -1,6 +1,5 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { User } from '@prisma/client'
 
@@ -35,9 +34,5 @@ export class UsersService {
 
   async findOneByEmail(email: string): Promise<User> {
     return await this.prisma.user.findUnique({ where: { email } })
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    return await this.prisma.user.update({ where: { id }, data: updateUserDto })
   }
 }
