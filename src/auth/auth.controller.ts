@@ -48,6 +48,7 @@ export class AuthController {
       res.cookie(ACCESS_TOKEN_COOKIE_NAME, access_token, {
         expires: dayjs().add(TOKEN_EXPIRE_DATE, 'days').toDate(),
         httpOnly: true,
+        domain: 'kronos.moe',
       })
 
       res.status(HttpStatus.OK).redirect(process.env.FRONTEND_URL + '/register')
