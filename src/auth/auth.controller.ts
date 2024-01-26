@@ -19,7 +19,7 @@ import {
 import { Request, Response } from 'express'
 import { ACCESS_TOKEN_COOKIE_NAME } from 'src/config/cookies'
 import { IGoogleUser } from './google.type'
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
 
 const TOKEN_EXPIRE_DATE = 30
 
