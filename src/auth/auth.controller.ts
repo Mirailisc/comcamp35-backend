@@ -50,7 +50,7 @@ export class AuthController {
         expires: dayjs().add(TOKEN_EXPIRE_DATE, 'days').toDate(),
         sameSite: 'none',
         secure: true,
-        httpOnly: true,
+        httpOnly: false,
       })
 
       res.status(HttpStatus.OK).redirect(process.env.FRONTEND_URL + '/register')
