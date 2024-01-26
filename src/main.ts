@@ -12,11 +12,11 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document)
 
   app.use(cookieParser())
-  // app.enableCors({
-  //   origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],
-  //   allowedHeaders: ['Content-Type', 'Authorization'],
-  //   credentials: true,
-  // })
+  app.enableCors({
+    origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
 
   await app.listen(PORT)
 }
