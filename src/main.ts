@@ -9,7 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+
+  process.env.NODE_ENV === 'production' &&
+    SwaggerModule.setup('api', app, document)
 
   app.use(cookieParser())
   app.enableCors({
