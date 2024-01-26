@@ -50,7 +50,7 @@ export class AuthController {
         httpOnly: true,
       })
 
-      res.status(HttpStatus.OK).redirect('/')
+      res.status(HttpStatus.OK).redirect(process.env.FRONTEND_URL + '/register')
     } catch (err) {
       res.status(HttpStatus.UNAUTHORIZED).redirect('/?error=' + err.message)
     }
