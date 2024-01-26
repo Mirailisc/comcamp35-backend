@@ -20,8 +20,7 @@ import { Request, Response } from 'express'
 import { ACCESS_TOKEN_COOKIE_NAME } from 'src/config/cookies'
 import { IGoogleUser } from './google.type'
 import * as dayjs from 'dayjs'
-
-const TOKEN_EXPIRE_DATE = 30
+import { TOKEN_EXPIRE_DATE } from 'src/config/constants'
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -48,9 +47,7 @@ export class AuthController {
 
       res.cookie(ACCESS_TOKEN_COOKIE_NAME, access_token, {
         expires: dayjs().add(TOKEN_EXPIRE_DATE, 'days').toDate(),
-        sameSite: 'none',
-        secure: true,
-        httpOnly: false,
+        httpOnly: true,
       })
 
       res.status(HttpStatus.OK).redirect(process.env.FRONTEND_URL + '/register')
