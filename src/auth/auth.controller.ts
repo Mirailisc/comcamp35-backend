@@ -50,6 +50,7 @@ export class AuthController {
         sameSite: 'none',
         secure: true,
         httpOnly: true,
+        domain: 'kronos.moe',
       })
 
       res.status(HttpStatus.OK).redirect(process.env.FRONTEND_URL + '/register')
