@@ -17,7 +17,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { Request, Response } from 'express'
-import { ACCESS_TOKEN_COOKIE_NAME } from 'src/config/cookies'
+import { ACCESS_TOKEN_COOKIE_NAME, cookieConfig } from 'src/config/cookies'
 import { IGoogleUser } from './google.type'
 import * as dayjs from 'dayjs'
 import { TOKEN_EXPIRE_DATE } from 'src/config/constants'
@@ -46,11 +46,8 @@ export class AuthController {
       )
 
       res.cookie(ACCESS_TOKEN_COOKIE_NAME, access_token, {
+        ...cookieConfig,
         expires: dayjs().add(TOKEN_EXPIRE_DATE, 'days').toDate(),
-        sameSite: 'none',
-        secure: true,
-        httpOnly: true,
-        domain: 'kronos.moe',
       })
 
       res.status(HttpStatus.OK).redirect(process.env.FRONTEND_URL + '/register')
@@ -67,6 +64,6 @@ export class AuthController {
   signOut(
     @Res({ passthrough: true }) res: Pick<Response, 'clearCookie' | 'status'>,
   ) {
-    res.clearCookie(ACCESS_TOKEN_COOKIE_NAME)
+    res.clearCookie(ACCESS_TOKEN_COOKIE_NAME, { ...cookieConfig, maxAge: -1 })
   }
 }
