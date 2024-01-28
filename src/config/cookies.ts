@@ -6,5 +6,5 @@ export const cookieConfig: CookieOptions = {
   sameSite: 'none',
   secure: true,
   httpOnly: true,
-  domain: 'kronos.moe',
+  domain: process.env.NODE_ENV === 'production' ? 'kronos.moe' : 'localhost',
 }

@@ -8,7 +8,7 @@ import { PORT } from './config/constants'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     const document = SwaggerModule.createDocument(app, config)
     SwaggerModule.setup('api', app, document)
   }
