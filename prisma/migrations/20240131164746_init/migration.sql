@@ -1,12 +1,23 @@
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "is_registered" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "middle_name" TEXT,
-ADD COLUMN     "nickname" TEXT;
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "prefix" TEXT,
+    "first_name" TEXT,
+    "middle_name" TEXT,
+    "last_name" TEXT,
+    "nickname" TEXT,
+    "profile_url" TEXT,
+    "is_registered" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Form" (
     "id" SERIAL NOT NULL,
-    "birtdate" TIMESTAMP(3) NOT NULL,
+    "birth_date" TIMESTAMP(3) NOT NULL,
     "tel" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "travel" TEXT NOT NULL,
@@ -17,6 +28,7 @@ CREATE TABLE "Form" (
     "disease" TEXT,
     "personal_drug" TEXT,
     "drug_allergy" TEXT,
+    "insurance" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,
 
@@ -49,6 +61,29 @@ CREATE TABLE "Education" (
     CONSTRAINT "Education_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "File" (
+    "id" SERIAL NOT NULL,
+    "url" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "File_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Form_userId_key" ON "Form"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Guardian_userId_key" ON "Guardian"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Education_userId_key" ON "Education"("userId");
+
 -- AddForeignKey
 ALTER TABLE "Form" ADD CONSTRAINT "Form_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -57,3 +92,6 @@ ALTER TABLE "Guardian" ADD CONSTRAINT "Guardian_userId_fkey" FOREIGN KEY ("userI
 
 -- AddForeignKey
 ALTER TABLE "Education" ADD CONSTRAINT "Education_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "File" ADD CONSTRAINT "File_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

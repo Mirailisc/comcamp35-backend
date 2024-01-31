@@ -59,11 +59,13 @@ export class AuthController {
   @Post('sign-out')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiCookieAuth(ACCESS_TOKEN_COOKIE_NAME)
+  @UseGuards(AuthGuard('jwt'))
   @ApiNoContentResponse()
   @ApiUnauthorizedResponse()
   signOut(
-    @Res({ passthrough: true }) res: Pick<Response, 'clearCookie' | 'status'>,
+    @Req() req: any,
+    @Res({ passthrough: true }) res: Pick<Response, 'clearCookie'>,
   ) {
-    res.clearCookie(ACCESS_TOKEN_COOKIE_NAME, { ...cookieConfig, maxAge: -1 })
+    this.authService.signOut(req.user.email, res)
   }
 }

@@ -8,24 +8,25 @@ datasource db {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
-  email         String      @unique
+  id            Int        @id @default(autoincrement())
+  email         String     @unique
+  prefix        String?
   first_name    String?
   middle_name   String?
   last_name     String?
   nickname      String?
   profile_url   String?
-  is_registered Boolean     @default(false)
-  created_at    DateTime    @default(now())
+  is_registered Boolean    @default(false)
+  created_at    DateTime   @default(now())
   files         File[]
-  Form          Form[]
-  Guardian      Guardian[]
-  Education     Education[]
+  Form          Form?
+  Guardian      Guardian?
+  Education     Education?
 }
 
 model Form {
   id               Int      @id @default(autoincrement())
-  birtdate         DateTime
+  birth_date       DateTime
   tel              String
   address          String
   travel           String
@@ -36,8 +37,9 @@ model Form {
   disease          String?
   personal_drug    String?
   drug_allergy     String?
+  insurance        String?
   created_at       DateTime @default(now())
-  userId           Int
+  userId           Int      @unique
   user             User     @relation(fields: [userId], references: [id])
 }
 
@@ -47,8 +49,12 @@ model Guardian {
   tel        String
   relation   String
   email      String?
+  emergency_name       String
+  emergency_tel        String
+  emergency_relation   String
+  emergency_email      String?
   created_at DateTime @default(now())
-  userId     Int
+  userId     Int      @unique
   user       User     @relation(fields: [userId], references: [id])
 }
 
@@ -59,7 +65,7 @@ model Education {
   degree      String
   gpax        Float
   created_at  DateTime @default(now())
-  userId      Int
+  userId      Int      @unique
   user        User     @relation(fields: [userId], references: [id])
 }
 

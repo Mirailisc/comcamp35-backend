@@ -2,10 +2,13 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  Res,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from 'src/users/users.service'
 import { IGoogleUser } from './google.type'
+import { Response } from 'express'
+import { ACCESS_TOKEN_COOKIE_NAME, cookieConfig } from 'src/config/cookies'
 
 @Injectable()
 export class AuthService {
@@ -50,5 +53,13 @@ export class AuthService {
     } catch {
       throw new InternalServerErrorException()
     }
+  }
+
+  signOut(
+    email: string,
+    @Res({ passthrough: true }) res: Pick<Response, 'clearCookie'>,
+  ) {
+    this.logger.log(`${email} signed out`)
+    res.clearCookie(ACCESS_TOKEN_COOKIE_NAME, { ...cookieConfig, maxAge: -1 })
   }
 }

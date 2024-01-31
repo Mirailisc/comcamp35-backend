@@ -8,10 +8,13 @@ import { PORT } from './config/constants'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  if (process.env.NODE_ENV !== 'production') {
-    const document = SwaggerModule.createDocument(app, config)
-    SwaggerModule.setup('api', app, document)
-  }
+  // if (process.env.NODE_ENV !== 'production') {
+  //   const document = SwaggerModule.createDocument(app, config)
+  //   SwaggerModule.setup('api', app, document)
+  // }
+
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, document)
 
   app.use(cookieParser())
   app.enableCors({
