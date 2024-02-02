@@ -4,6 +4,7 @@ import { SwaggerModule } from '@nestjs/swagger'
 import { config } from './config/swagger'
 import * as cookieParser from 'cookie-parser'
 import { PORT } from './config/constants'
+import { apiReference } from '@scalar/nestjs-api-reference'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -14,7 +15,15 @@ async function bootstrap() {
   // }
 
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+
+  app.use(
+    '/api',
+    apiReference({
+      spec: {
+        content: document,
+      },
+    }),
+  )
 
   app.use(cookieParser())
   app.enableCors({

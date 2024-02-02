@@ -18,10 +18,10 @@ model User {
   profile_url   String?
   is_registered Boolean    @default(false)
   created_at    DateTime   @default(now())
+  Education     Education?
   files         File[]
   Form          Form?
   Guardian      Guardian?
-  Education     Education?
 }
 
 model Form {
@@ -44,18 +44,18 @@ model Form {
 }
 
 model Guardian {
-  id         Int      @id @default(autoincrement())
-  name       String
-  tel        String
-  relation   String
-  email      String?
-  emergency_name       String
-  emergency_tel        String
-  emergency_relation   String
-  emergency_email      String?
-  created_at DateTime @default(now())
-  userId     Int      @unique
-  user       User     @relation(fields: [userId], references: [id])
+  id                 Int      @id @default(autoincrement())
+  name               String
+  tel                String
+  relation           String
+  email              String?
+  created_at         DateTime @default(now())
+  userId             Int      @unique
+  emergency_email    String?
+  emergency_name     String
+  emergency_relation String
+  emergency_tel      String
+  user               User     @relation(fields: [userId], references: [id])
 }
 
 model Education {
