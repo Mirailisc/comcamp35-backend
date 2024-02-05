@@ -1,6 +1,6 @@
 import { DocumentBuilder } from '@nestjs/swagger'
 
-const limitShaVersion = 5
+const limitShaVersion = 8
 const appVersion = process.env.APP_VERSION
 
 export const config = new DocumentBuilder()
