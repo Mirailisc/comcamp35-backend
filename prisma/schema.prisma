@@ -25,22 +25,22 @@ model User {
 }
 
 model Form {
-  id               Int      @id @default(autoincrement())
-  birth_date       DateTime
-  tel              String
-  address          String
-  travel           String
-  shirt_size       String
-  can_bring_laptop Boolean
-  food_allergy     String?
-  favorite_food    String?
-  disease          String?
-  personal_drug    String?
-  drug_allergy     String?
-  insurance        String?
-  created_at       DateTime @default(now())
-  userId           Int      @unique
-  user             User     @relation(fields: [userId], references: [id])
+  id                 Int      @id @default(autoincrement())
+  birth_date         DateTime
+  tel                String
+  address            String
+  travel             String
+  shirt_size         String
+  can_bring_laptop   Boolean
+  food_allergy       String?
+  special_food_needs String?
+  disease            String?
+  personal_drug      String?
+  drug_allergy       String?
+  insurance          String?
+  created_at         DateTime @default(now())
+  userId             Int      @unique
+  user               User     @relation(fields: [userId], references: [id])
 }
 
 model Guardian {

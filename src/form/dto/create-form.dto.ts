@@ -38,7 +38,7 @@ export class CreateFormDto {
   food_allergy?: string
 
   @ApiProperty({ example: 'meth', nullable: true, required: false })
-  favorite_food?: string
+  special_food_needs?: string
 
   @ApiProperty({ example: 'cancer', nullable: true, required: false })
   disease?: string
