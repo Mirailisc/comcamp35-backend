@@ -24,7 +24,7 @@ CREATE TABLE "Form" (
     "shirt_size" TEXT NOT NULL,
     "can_bring_laptop" BOOLEAN NOT NULL,
     "food_allergy" TEXT,
-    "favorite_food" TEXT,
+    "special_food_needs" TEXT,
     "disease" TEXT,
     "personal_drug" TEXT,
     "drug_allergy" TEXT,
@@ -44,6 +44,10 @@ CREATE TABLE "Guardian" (
     "email" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,
+    "emergency_email" TEXT,
+    "emergency_name" TEXT NOT NULL,
+    "emergency_relation" TEXT NOT NULL,
+    "emergency_tel" TEXT NOT NULL,
 
     CONSTRAINT "Guardian_pkey" PRIMARY KEY ("id")
 );
