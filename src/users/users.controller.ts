@@ -14,8 +14,8 @@ export class UsersController {
     return await this.usersService.findOneByEmail(req.user.email)
   }
 
-  @Get()
-  async getAllUsers() {
-    return await this.usersService.findAll()
-  }
+  // @Get()
+  // async getAllUsers() {
+  //   return await this.usersService.findAll()
+  // }
 }
