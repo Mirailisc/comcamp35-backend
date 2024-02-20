@@ -13,4 +13,9 @@ export class UsersController {
   async getCurrentUser(@Req() req: any) {
     return await this.usersService.findOneByEmail(req.user.email)
   }
+
+  @Get()
+  async getAllUsers() {
+    return await this.usersService.findAll()
+  }
 }
