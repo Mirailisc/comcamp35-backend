@@ -10,6 +10,6 @@ export class CreateEducationDto {
   @ApiProperty({ example: "Bachelor's" })
   degree: string
 
-  @ApiProperty({ example: 1.5 })
-  gpax: number
+  @ApiProperty({ example: '1.5' })
+  gpax: string
 }
