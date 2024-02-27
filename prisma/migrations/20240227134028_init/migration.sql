@@ -58,7 +58,7 @@ CREATE TABLE "Education" (
     "school_name" TEXT NOT NULL,
     "major" TEXT NOT NULL,
     "degree" TEXT NOT NULL,
-    "gpax" DOUBLE PRECISION NOT NULL,
+    "gpax" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,
 
@@ -74,6 +74,20 @@ CREATE TABLE "File" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Question" (
+    "id" SERIAL NOT NULL,
+    "answer_1" TEXT NOT NULL,
+    "answer_2" TEXT NOT NULL,
+    "answer_3" TEXT NOT NULL,
+    "answer_4" TEXT NOT NULL,
+    "answer_5" TEXT NOT NULL,
+    "answer_6" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -99,3 +113,6 @@ ALTER TABLE "Education" ADD CONSTRAINT "Education_userId_fkey" FOREIGN KEY ("use
 
 -- AddForeignKey
 ALTER TABLE "File" ADD CONSTRAINT "File_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Question" ADD CONSTRAINT "Question_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
