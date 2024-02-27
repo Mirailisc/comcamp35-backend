@@ -80,13 +80,14 @@ model File {
 }
 
 model Question {
-  id       Int    @id @default(autoincrement())
-  answer_1 String
-  answer_2 String
-  answer_3 String
-  answer_4 String
-  answer_5 String
-  answer_6 String
-  userId   Int
-  User     User   @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  answer_1   String
+  answer_2   String
+  answer_3   String
+  answer_4   String
+  answer_5   String
+  answer_6   String
+  userId     Int      @unique
+  created_at DateTime @default(now())
+  User       User     @relation(fields: [userId], references: [id])
 }

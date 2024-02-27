@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module'
 import { FormModule } from './form/form.module'
 import { GuardianModule } from './guardian/guardian.module'
 import { EducationModule } from './education/education.module'
+import { QuestionModule } from './question/question.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EducationModule } from './education/education.module'
     FormModule,
     GuardianModule,
     EducationModule,
+    QuestionModule,
   ],
   controllers: [],
   providers: [],
