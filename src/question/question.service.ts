@@ -10,6 +10,12 @@ export class QuestionService {
 
   async create(id: number, answerDto: AnswerDto) {
     this.logger.log(`User ID ${id} submitted interview questions`)
+
+    await this.prisma.user.update({
+      where: { id },
+      data: { is_registered: true },
+    })
+
     return await this.prisma.question.upsert({
       where: { userId: id },
       create: { ...answerDto, userId: id },
