@@ -1,6 +1,5 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { File as PrismaFile } from '@prisma/client'
-import { upload } from 'node-mirai'
 import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
@@ -9,18 +8,18 @@ export class FileService {
 
   constructor(private prisma: PrismaService) {}
 
-  async uploadFile(file: Express.Multer.File, userId: number, type: string) {
-    if (!file) {
-      throw new NotFoundException('File not found')
-    }
+  async uploadFile(url: string, userId: number, type: string) {
+    // if (!file) {
+    //   throw new NotFoundException('File not found')
+    // }
 
-    const fileName = `${userId}${Date.now()}-${file.originalname}`
+    // const fileName = `${userId}${Date.now()}-${file.originalname}`
 
-    const newFile = new File([Buffer.from(file.buffer)], file.originalname)
+    // const newFile = new File([Buffer.from(file.buffer)], file.originalname)
 
-    const { url } = await upload(newFile, {
-      headers: { Random: 'comcamp35', CustomHeader: 'nanahoshi' },
-    })
+    // const { url } = await upload(newFile, {
+    //   headers: { Random: 'comcamp35', CustomHeader: 'nanahoshi' },
+    // })
 
     await this.prisma.user.update({
       where: { id: userId },
@@ -36,8 +35,8 @@ export class FileService {
       },
     })
 
-    this.logger.log(`User ${userId} uploaded file ${file.originalname}`)
-    return fileName
+    this.logger.log(`User ${userId} uploaded file to ${url}`)
+    return url
   }
 
   async getFileUrlByUserId(id: number): Promise<PrismaFile[]> {
