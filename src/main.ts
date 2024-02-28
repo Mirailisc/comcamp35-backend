@@ -6,12 +6,9 @@ import * as cookieParser from 'cookie-parser'
 import { PORT } from './config/constants'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { json } from 'body-parser'
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    bodyParser: false,
-  })
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
   if (process.env.NODE_ENV !== 'production') {
     const document = SwaggerModule.createDocument(app, config)
@@ -27,7 +24,11 @@ async function bootstrap() {
     )
   }
 
-  app.use(json({ limit: '5m' }))
+  app.useBodyParser('json', { limit: '50mb' })
+  app.useBodyParser('urlencoded', {
+    limit: '50mb',
+    extended: true,
+  })
   app.use(cookieParser())
   app.enableCors({
     origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],
