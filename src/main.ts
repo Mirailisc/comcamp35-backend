@@ -4,25 +4,28 @@ import { SwaggerModule } from '@nestjs/swagger'
 import { config } from './config/swagger'
 import * as cookieParser from 'cookie-parser'
 import { PORT } from './config/constants'
-import { apiReference } from '@scalar/nestjs-api-reference'
+// import { apiReference } from '@scalar/nestjs-api-reference'
 import { NestExpressApplication } from '@nestjs/platform-express'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
-  if (process.env.NODE_ENV !== 'production') {
-    const document = SwaggerModule.createDocument(app, config)
-    // SwaggerModule.setup('api', app, document)
+  // if (process.env.NODE_ENV !== 'production') {
+  //   const document = SwaggerModule.createDocument(app, config)
+  //   SwaggerModule.setup('api', app, document)
 
-    app.use(
-      '/api',
-      apiReference({
-        spec: {
-          content: document,
-        },
-      }),
-    )
-  }
+  //   app.use(
+  //     '/api',
+  //     apiReference({
+  //       spec: {
+  //         content: document,
+  //       },
+  //     }),
+  //   )
+  // }
+
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, document)
 
   app.useBodyParser('json', { limit: '50mb' })
   app.useBodyParser('urlencoded', {
