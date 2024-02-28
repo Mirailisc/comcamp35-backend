@@ -6,6 +6,7 @@ import * as cookieParser from 'cookie-parser'
 import { PORT } from './config/constants'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import * as bodyParser from 'body-parser'
+import * as express from 'express'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -26,6 +27,8 @@ async function bootstrap() {
 
   app.use(bodyParser.json({ limit: '50mb' }))
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+  app.use(express.json())
+
   app.use(cookieParser())
   app.enableCors({
     origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],

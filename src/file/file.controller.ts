@@ -4,15 +4,18 @@ import {
   Post,
   Body,
   Req,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
+  UploadedFiles,
+  ParseFilePipe,
+  MaxFileSizeValidator,
 } from '@nestjs/common'
 import { FileService } from './file.service'
 import { ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { AuthGuard } from '@nestjs/passport'
 import { UploadFileDto } from './dto/upload-file.dto'
+import { MAX_UPLOAD_BYTES } from 'src/config/constants'
 
 @ApiTags('File Upload')
 @Controller('file')
@@ -25,7 +28,12 @@ export class FileController {
   @UseGuards(AuthGuard('jwt'))
   async uploadFile(
     @Body() uploadFileDto: UploadFileDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: MAX_UPLOAD_BYTES })],
+      }),
+    )
+    file: Express.Multer.File,
     @Req() req: any,
   ) {
     await this.fileService.uploadFile(file, req.user.id, uploadFileDto.type)
