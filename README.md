@@ -20,11 +20,6 @@ enter this lines in `.env` file
 # Database
 DATABASE_URL=""
 
-MINIO_ENDPOINT=""
-MINIO_ACCESS_KEY=""
-MINIO_SECRET_KEY=""
-MINIO_BUCKET_NAME=""
-
 # Google OAuth
 GOOGLE_CLIENT_ID=""
 GOOGLE_SECRET=""

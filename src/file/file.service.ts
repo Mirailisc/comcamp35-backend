@@ -1,34 +1,13 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
-import { File } from '@prisma/client'
-import * as Minio from 'minio'
+import { File as PrismaFile } from '@prisma/client'
+import { upload } from 'node-mirai'
 import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
 export class FileService {
   private logger: Logger = new Logger('S3')
 
-  private minioClient: Minio.Client
-
-  private bucketName: string
-
-  constructor(private prisma: PrismaService) {
-    this.minioClient = new Minio.Client({
-      endPoint: process.env.MINIO_ENDPOINT,
-      port: 443,
-      useSSL: true,
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY,
-    })
-
-    this.bucketName = process.env.MINIO_BUCKET_NAME
-  }
-
-  async createBucketIfNotExists() {
-    const bucketExists = await this.minioClient.bucketExists(this.bucketName)
-    if (!bucketExists) {
-      await this.minioClient.makeBucket(this.bucketName)
-    }
-  }
+  constructor(private prisma: PrismaService) {}
 
   async uploadFile(file: Express.Multer.File, userId: number, type: string) {
     if (!file) {
@@ -37,14 +16,11 @@ export class FileService {
 
     const fileName = `${userId}${Date.now()}-${file.originalname}`
 
-    await this.minioClient.putObject(
-      this.bucketName,
-      fileName,
-      file.buffer,
-      file.size,
-    )
+    const newFile = new File([Buffer.from(file.buffer)], file.originalname)
 
-    const fileUrl = await this.getFileUrl(fileName)
+    const { url } = await upload(newFile, {
+      headers: { Random: 'comcamp35', CustomHeader: 'nanahoshi' },
+    })
 
     await this.prisma.user.update({
       where: { id: userId },
@@ -52,7 +28,7 @@ export class FileService {
         files: {
           create: [
             {
-              url: fileUrl,
+              url,
               type,
             },
           ],
@@ -60,23 +36,15 @@ export class FileService {
       },
     })
 
-    this.logger.log(`File ${file.originalname} uploaded`)
+    this.logger.log(`User ${userId} uploaded file ${file.originalname}`)
     return fileName
   }
 
-  async getFileUrlByUserId(id: number): Promise<File[]> {
+  async getFileUrlByUserId(id: number): Promise<PrismaFile[]> {
     const files = await this.prisma.file.findMany({
       where: { userId: id },
     })
 
     return files
-  }
-
-  async getFileUrl(fileName: string) {
-    return `http://${process.env.MINIO_ENDPOINT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`
-  }
-
-  async deleteFile(fileName: string) {
-    await this.minioClient.removeObject(this.bucketName, fileName)
   }
 }
