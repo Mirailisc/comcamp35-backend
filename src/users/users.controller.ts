@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common'
+import { Controller, Get, UseGuards, Req, Patch } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
@@ -12,6 +12,12 @@ export class UsersController {
   @Get('info')
   async getCurrentUser(@Req() req: any) {
     return await this.usersService.findOneByEmail(req.user.email)
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('register')
+  async setRegisterStatus(@Req() req: any) {
+    return await this.usersService.setRegisterStatus(req.user.email)
   }
 
   // @Get()

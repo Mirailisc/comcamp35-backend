@@ -35,4 +35,11 @@ export class UsersService {
   async findOneByEmail(email: string): Promise<User> {
     return await this.prisma.user.findUnique({ where: { email } })
   }
+
+  async setRegisterStatus(email: string): Promise<User> {
+    return await this.prisma.user.update({
+      where: { email },
+      data: { is_registered: true },
+    })
+  }
 }
