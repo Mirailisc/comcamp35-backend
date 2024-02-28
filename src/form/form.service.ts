@@ -10,7 +10,7 @@ export class FormService {
 
   constructor(private prisma: PrismaService) {}
 
-  async createOrUpdate(email: string, formDto: CreateFormDto): Promise<Form> {
+  async createOrUpdate(id: number, formDto: CreateFormDto): Promise<Form> {
     const userData = pick(formDto, [
       'first_name',
       'last_name',
@@ -27,11 +27,11 @@ export class FormService {
       'prefix',
     ])
 
-    this.logger.log(`${email} submitted general form`)
+    this.logger.log(`User ID ${id} submitted general form`)
 
     try {
       const formDataByUser = await this.prisma.user.update({
-        where: { email },
+        where: { id },
         data: {
           ...userData,
           Form: {

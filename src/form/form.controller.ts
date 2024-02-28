@@ -12,7 +12,7 @@ export class FormController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   async createOrUpdate(@Req() req: any, @Body() createFormDto: CreateFormDto) {
-    return await this.formService.createOrUpdate(req.user.email, createFormDto)
+    return await this.formService.createOrUpdate(req.user.id, createFormDto)
   }
 
   @UseGuards(AuthGuard('jwt'))
