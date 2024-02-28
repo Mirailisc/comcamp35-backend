@@ -6,7 +6,7 @@ import {
   Req,
   UseGuards,
   UseInterceptors,
-  UploadedFiles,
+  UploadedFile,
   ParseFilePipe,
   MaxFileSizeValidator,
 } from '@nestjs/common'
@@ -28,7 +28,7 @@ export class FileController {
   @UseGuards(AuthGuard('jwt'))
   async uploadFile(
     @Body() uploadFileDto: UploadFileDto,
-    @UploadedFiles(
+    @UploadedFile(
       new ParseFilePipe({
         validators: [new MaxFileSizeValidator({ maxSize: MAX_UPLOAD_BYTES })],
       }),
