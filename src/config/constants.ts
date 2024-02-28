@@ -1,5 +1,5 @@
 const byte = 1024
-const mbSize = 500
+const mbSize = 5
 
 export const PORT = 4000
 export const TOKEN_EXPIRE_DATE = 30

@@ -27,7 +27,7 @@ async function bootstrap() {
     )
   }
 
-  app.use(json({ limit: '500m' }))
+  app.use(json({ limit: '5m' }))
   app.use(cookieParser())
   app.enableCors({
     origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],
