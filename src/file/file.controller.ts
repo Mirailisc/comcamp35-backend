@@ -12,11 +12,7 @@ export class FileController {
   @Post('upload')
   @UseGuards(AuthGuard('jwt'))
   async uploadFile(@Body() uploadFileDto: UploadFileDto, @Req() req: any) {
-    await this.fileService.uploadFile(
-      uploadFileDto.url,
-      req.user.id,
-      uploadFileDto.type,
-    )
+    await this.fileService.uploadFile(req.user.id, uploadFileDto)
   }
 
   @Get()

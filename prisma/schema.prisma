@@ -75,7 +75,7 @@ model File {
   id         Int      @id @default(autoincrement())
   url        String
   type       String
-  userId     Int
+  userId     Int      @unique
   created_at DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
 }

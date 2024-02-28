@@ -9,6 +9,7 @@ CREATE TABLE "User" (
     "nickname" TEXT,
     "profile_url" TEXT,
     "is_registered" BOOLEAN NOT NULL DEFAULT false,
+    "is_verify" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -86,6 +87,7 @@ CREATE TABLE "Question" (
     "answer_5" TEXT NOT NULL,
     "answer_6" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
@@ -101,6 +103,12 @@ CREATE UNIQUE INDEX "Guardian_userId_key" ON "Guardian"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Education_userId_key" ON "Education"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "File_userId_key" ON "File"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Question_userId_key" ON "Question"("userId");
 
 -- AddForeignKey
 ALTER TABLE "Form" ADD CONSTRAINT "Form_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
